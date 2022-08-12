@@ -4,41 +4,39 @@ import { Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function PicturePage(props) {
-  const [photoData, setPhotoData] = useState(null);
-  useEffect(() => {
-    console.log(props.route.params.photoData);
-    setPhotoData(props.route.params.photoData);
-  }, [props]);
-
   return (
     <View>
       <View style={styles.headerContainer}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate("MainScreen")}
+          style={{ flex: 1, justifyContent: "flex-start" }}
         >
           <Icon name="arrow-left" type="font-awesome-5" color="black" />
         </TouchableOpacity>
-        {photoData !== null && (
-          <Text style={styles.titleText}>{photoData.title}</Text>
-        )}
+        <View style={{ justifyContent: "center" }}>
+          <Text style={styles.titleText}>
+            {props.route.params.photoData.title}
+          </Text>
+        </View>
       </View>
       {/* <View> */}
       {/* {photoData !== null && ( */}
-      <>
-        <View style={{ flex: 1 }}>
+      <View style={styles.bodyContainer}>
+        <View style={{ alignItems: "center" }}>
           <Image
             source={{
-              uri: "https://apod.nasa.gov/apod/image/2202/albireoSpectrum1024.jpg",
+              uri: props.route.params.photoData.url,
             }}
             style={styles.photoStyle}
           />
         </View>
-        {/* <ScrollView>
-              <Text>{photoData.explanation}</Text>
-            </ScrollView> */}
-      </>
-      {/* )} */}
-      {/* </View>r */}
+        <ScrollView style={{ marginBottom: "100%" }}>
+          <Text style={styles.bodyText}>
+            Description: {props.route.params.photoData.explanation}
+            {"\n"}
+          </Text>
+        </ScrollView>
+      </View>
     </View>
   );
 }
@@ -48,15 +46,26 @@ const styles = StyleSheet.create({
     padding: "5%",
     paddingTop: "15%", // adding to allow space from top notch on iOS
     flexDirection: "row",
-    // justifyContent: "space-between",
+  },
+  bodyContainer: {
+    marginBottom: 100,
+    height: "102%",
   },
   titleText: {
-    paddingLeft: "15%",
+    marginLeft: "5%",
     alignContent: "center",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  bodyText: {
+    margin: "5%",
+    fontSize: 15,
+    // marginBottom: 150,
   },
   photoStyle: {
     width: "100%",
-    width: "100%",
-    margin: 10,
+    width: "85%",
+    // margin: 5,
+    padding: 200,
   },
 });
