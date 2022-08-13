@@ -60,35 +60,57 @@ export default function MainPage(props) {
         <Text style={styles.bodyText}>
           Search for Astronomy: Picture of the day by date.
         </Text>
-        <TextInput
-          placeholder="Start Date"
-          paddingVertical="5%"
-          style={styles.dateInput}
-          onChangeText={(newText) => setStartDate(newText)}
-          defaultValue={"2022-02-26"}
-        />
-        <TextInput
-          placeholder="End Date"
-          paddingVertical="5%"
-          style={styles.dateInput}
-          onChangeText={(newText) => setEndDate(newText)}
-          defaultValue={"2022-02-28"}
-        />
-        <TouchableOpacity onPress={() => fetchPhotos()}>
-          <Text>Search</Text>
+        <View style={{ justifyContent: "space-around" }}>
+          <TextInput
+            placeholder="Start Date"
+            paddingVertical="5%"
+            style={styles.dateInput}
+            onChangeText={(newText) => setStartDate(newText)}
+            inputStyle={{ color: "black" }}
+            //   defaultValue={"2022-02-26"}
+          />
+          <TextInput
+            placeholder="End Date"
+            paddingVertical="5%"
+            style={styles.dateInput}
+            onChangeText={(newText) => setEndDate(newText)}
+            inputStyle={{ color: "black" }}
+            //   defaultValue={"2022-02-28"}
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() => fetchPhotos()}
+        >
+          <Text style={styles.buttonText}>Search</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.resultsContainer}>
         <Text>Results ({resultsNum}):</Text>
-        <Text>{results.length}</Text>
-        <View style={styles.iconGrid}>
-          <FlatList
+        {/* <View style={styles.iconGrid}> */}
+        {results.length === 0 ? (
+          <Text style={styles.resultsText}>
+            No results found. Enter a start and end date.
+          </Text>
+        ) : (
+          <View style={styles.iconGrid}>
+            <FlatList
+              data={results}
+              renderItem={({ item, i }) => renderPhotos(item, i)}
+              style={styles.iconList}
+              numColumns={3}
+              directionalLockEnabled={true}
+            />
+          </View>
+        )}
+        {/* <FlatList
             data={results}
             renderItem={({ item, i }) => renderPhotos(item, i)}
             style={styles.iconList}
             numColumns={3}
-          />
-        </View>
+            directionalLockEnabled={true}
+          /> */}
+        {/* </View> */}
       </View>
       <StatusBar style="auto" />
     </View>
@@ -99,6 +121,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    justifyContent: "center",
+  },
+  searchButton: {
+    borderWidth: 1,
+    borderRadius: 5,
+    alignContent: "center",
+    padding: "2%",
+  },
+  buttonText: {
+    textAlign: "center",
+    fontSize: 20,
   },
   titleHeader: {
     justifyContent: "center",
@@ -110,8 +143,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   bodyContainer: {
-    padding: "5%",
+    paddingHorizontal: "5%",
     paddingTop: "10%",
+    marginBottom: "-40%",
   },
   subHeaderText: {
     fontWeight: "bold",
@@ -122,33 +156,38 @@ const styles = StyleSheet.create({
     paddingTop: "2%",
   },
   dateInput: {
-    height: "20%",
+    height: "22%",
     width: "100%",
-    // backgroundColor: '#E0EAE5',
+    backgroundColor: "#F5F7FB",
     color: "black",
+    padding: "2%",
   },
   resultsContainer: {
-    padding: "5%",
+    paddingHorizontal: "5%",
     flex: 1,
     // paddingTop: '1%'
+    marginBottom: "10%",
   },
   icons: {
-    width: 100,
-    height: 100,
-    margin: 10,
+    width: 110,
+    height: 110,
+    margin: 5,
   },
   iconContainer: {
-    padding: "10%",
+    padding: "5%",
     // width: "50%",
   },
   iconGrid: {
     flex: 1,
     flexDirection: "row",
-    padding: 10,
+    padding: 5,
     justifyContent: "center",
   },
   iconList: {
     flexWrap: "wrap",
     // padding: "10%",
+  },
+  resultsText: {
+    paddingTop: "2%",
   },
 });
