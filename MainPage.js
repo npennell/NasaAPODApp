@@ -1,8 +1,10 @@
+/**
+ * MainPage is the main Picture of the Day page shown in the app
+ */
+
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
-  Button,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -13,27 +15,28 @@ import {
 } from "react-native";
 
 export default function MainPage(props) {
-  let [startDate, setStartDate] = useState("2022-02-20");
-  let [endDate, setEndDate] = useState("2022-02-28");
+  const [startDate, setStartDate] = useState("0000-00-00");
+  const [endDate, setEndDate] = useState("0000-00-00");
   const [resultsNum, setResultsNum] = useState(0);
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    setResultsNum(results.length);
+    if (results.code === 400) {
+      setResultsNum(0);
+    } else {
+      setResultsNum(results.length);
+    }
   }, [results]);
 
   const fetchPhotos = async () => {
     const basicUrl = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY";
     const fullUrl =
       basicUrl + "&start_date=" + startDate + "&end_date=" + endDate;
-    console.log(basicUrl);
     await fetch(fullUrl)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setResults(data);
       });
-    console.log(results);
   };
 
   const renderPhotos = (item, i) => {
@@ -66,16 +69,12 @@ export default function MainPage(props) {
             paddingVertical="5%"
             style={styles.dateInput}
             onChangeText={(newText) => setStartDate(newText)}
-            inputStyle={{ color: "black" }}
-            //   defaultValue={"2022-02-26"}
           />
           <TextInput
             placeholder="End Date"
             paddingVertical="5%"
             style={styles.dateInput}
             onChangeText={(newText) => setEndDate(newText)}
-            inputStyle={{ color: "black" }}
-            //   defaultValue={"2022-02-28"}
           />
         </View>
         <TouchableOpacity
@@ -87,8 +86,7 @@ export default function MainPage(props) {
       </View>
       <View style={styles.resultsContainer}>
         <Text>Results ({resultsNum}):</Text>
-        {/* <View style={styles.iconGrid}> */}
-        {results.length === 0 ? (
+        {results.length === 0 || results.code === 400 ? (
           <Text style={styles.resultsText}>
             No results found. Enter a start and end date.
           </Text>
@@ -103,14 +101,6 @@ export default function MainPage(props) {
             />
           </View>
         )}
-        {/* <FlatList
-            data={results}
-            renderItem={({ item, i }) => renderPhotos(item, i)}
-            style={styles.iconList}
-            numColumns={3}
-            directionalLockEnabled={true}
-          /> */}
-        {/* </View> */}
       </View>
       <StatusBar style="auto" />
     </View>
@@ -165,7 +155,6 @@ const styles = StyleSheet.create({
   resultsContainer: {
     paddingHorizontal: "5%",
     flex: 1,
-    // paddingTop: '1%'
     marginBottom: "10%",
   },
   icons: {
@@ -175,7 +164,6 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     padding: "5%",
-    // width: "50%",
   },
   iconGrid: {
     flex: 1,
@@ -185,7 +173,6 @@ const styles = StyleSheet.create({
   },
   iconList: {
     flexWrap: "wrap",
-    // padding: "10%",
   },
   resultsText: {
     paddingTop: "2%",

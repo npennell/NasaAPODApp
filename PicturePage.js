@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+/**
+ * PicturePage is the page shown when an image is clicked from the MainPage
+ */
+
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -19,8 +22,6 @@ export default function PicturePage(props) {
           </Text>
         </View>
       </View>
-      {/* <View> */}
-      {/* {photoData !== null && ( */}
       <View style={styles.bodyContainer}>
         <View style={{ alignItems: "center" }}>
           <Image
@@ -60,12 +61,10 @@ const styles = StyleSheet.create({
   bodyText: {
     margin: "5%",
     fontSize: 15,
-    // marginBottom: 150,
   },
   photoStyle: {
     width: "100%",
     width: "85%",
-    // margin: 5,
     padding: 200,
   },
 });

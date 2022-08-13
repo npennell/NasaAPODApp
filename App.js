@@ -1,3 +1,6 @@
+/**
+ * App handles navigation for the app between the two pages
+ */
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
